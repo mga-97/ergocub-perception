@@ -158,5 +158,5 @@ dmypy.json
 SUPPORT_SET.png
 .sudo_as_admin_successful
 SUPPORT_SET.gif
-action_rec/focus/assets/
-action_rec/focus/weights
+#action_rec/focus/assets/
+#action_rec/focus/weights
