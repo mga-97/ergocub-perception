@@ -18,7 +18,7 @@ class Network(BaseConfig):
     class Args:
         out_queues = {
             # in_port_name, out_port_name, data_type, out_name
-            'rgb': YarpQueue(local_port_name='/cer/realsense_repeater/rgbImage:o',
+            'rgb': YarpQueue(local_port_name='/depthCamera/rgbImage:r',
                              data_type='rgb', write_format='rgb', blocking=False),
             'depth': YarpQueue(local_port_name='/depthCamera/depthImage:r',
                                data_type='depth', write_format='depth', blocking=False)

@@ -22,7 +22,7 @@ class Network(BaseConfig):
     class Args:
 
         in_queues = {
-            'rgb_in': YarpQueue(remote_port_name='/cer/realsense_repeater/rgbImage:o', local_port_name='/Recorder/rgbImage:i',
+            'rgb_in': YarpQueue(remote_port_name='/depthCamera/rgbImage:r', local_port_name='/Recorder/rgbImage:i',
                                  data_type='rgb', read_format='rgb', blocking=False),
             'depth_in': YarpQueue(remote_port_name='/depthCamera/depthImage:r', local_port_name='/Recorder/depthImage:i',
                                   data_type='depth', read_format='depth', blocking=False)

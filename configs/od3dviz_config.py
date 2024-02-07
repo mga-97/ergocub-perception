@@ -22,7 +22,7 @@ class Network(BaseConfig):
                                              ['reconstruction', 'transform', 'scene',
                                               'hands', 'vertices', 'center', 'rgb', 'depth']},
                                 blocking=False),
-            # 'rgb': YarpQueue(remote_port_name='/cer/realsense_repeater/rgbImage:o', local_port_name='/Visualizer3D/rgbImage:i',
+            # 'rgb': YarpQueue(remote_port_name='/depthCamera/rgbImage:r', local_port_name='/Visualizer3D/rgbImage:i',
             #                  data_type='rgb', read_format='rgb', read_default=Signals.USE_LATEST, blocking=False),
             # 'depth': YarpQueue(remote_port_name='/depthCamera/depthImage:r',
             #                    local_port_name='/Visualizer3D/depthImage:i',

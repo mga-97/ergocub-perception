@@ -182,7 +182,7 @@ fi
 
 if [ -n "$REPEATER" ] # Variable is non-null
 then
-  tmux send-keys -t $TMUX_NAME "yarp repeat /cer/realsense_repeater/rgbImage:o" Enter
+  tmux send-keys -t $TMUX_NAME "yarp repeat /depthCamera/rgbImage:r" Enter
 fi
 
 if [ -n "$START_YARP_SERVER" ] # Variable is non-null
