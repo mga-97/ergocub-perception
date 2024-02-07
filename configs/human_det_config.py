@@ -25,7 +25,7 @@ class Network(BaseConfig):
 
     class Args:
         in_queues = {
-            'rgb': YarpQueue(remote_port_name='/depthCamera/rgbImage:r', local_port_name='/HumanDetection/rgbImage:i',
+            'rgb': YarpQueue(remote_port_name='/cer/realsense_repeater/rgbImage:o', local_port_name='/HumanDetection/rgbImage:i',
                              data_type='rgb', read_format='rgb', read_default=Signals.USE_LATEST, blocking=False),
             'rec_hd': PyQueue(ip="localhost", port=50000, queue_name='rec_hd', blocking=False)
         }
