@@ -163,6 +163,9 @@ class Sink(Network.node):
             img = cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), color, 3)
 
         action = data.get('action', Signals.MISSING_VALUE)
+        btl = self.action_port.prepare()
+        btl.clear()
+        btl.addString('none')
         if action is not Signals.MISSING_VALUE:
             self.action = action
         if self.action not in Signals:
@@ -173,10 +176,9 @@ class Sink(Network.node):
                     text_color = (0, 255, 0)
                     img = cv2.putText(img, self.action, (textX, 450), cv2.FONT_ITALIC, 1, text_color, 2, cv2.LINE_AA)
                     
-                    btl = self.action_port.prepare()
                     btl.clear()
                     btl.addString(str(self.action))
-                    self.action_port.write()
+        self.action_port.write()
 
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
