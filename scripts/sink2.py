@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from random import choice
 
 import cv2
 import numpy as np
@@ -43,15 +44,23 @@ class Sink(Network.node):
         self.edges = Signals.NOT_OBSERVED
         self.is_true = Signals.NOT_OBSERVED
         self.action = Signals.NOT_OBSERVED
+        self.prev_action = Signals.NOT_OBSERVED
         super().__init__(**Network.Args.to_dict())
 
         self.action_port = yarp.BufferedPortBottle()
         action_port_name = '/perception/action_recognition:o'
         self.action_port.open(action_port_name)
+        self.response_port = yarp.BufferedPortBottle()
+        response_port_name = '/perception/response:o'
+        self.response_port.open(response_port_name)
         print('{:s} opened'.format(action_port_name))
 
     def startup(self):
         pass
+
+    def choose_greeting(self):
+        greetings = ["Hello", "Hey!", "Ciao", "How you doing?", "I would wave back but my arms are not working", "Good morning"]
+        return choice(greetings)
 
     def loop(self, data: dict) -> dict:
 
@@ -166,11 +175,17 @@ class Sink(Network.node):
         btl = self.action_port.prepare()
         btl.clear()
         btl.addString('none')
+        response_btl = self.response_port.prepare()
+        response_btl.clear()
         if action is not Signals.MISSING_VALUE:
             self.action = action
         if self.action not in Signals:
             if self.obj_distance is Signals.NOT_OBSERVED or self.obj_distance/1000 > 1.5:  # No box in 1 meter
                 if self.action != 'none':
+                    if self.action == 'wave' and self.action != self.prev_action:
+                        resposne_string = self.choose_greeting()
+                        response_btl.addString(resposne_string)
+                        self.response_port.write()
                     textsize = cv2.getTextSize(self.action, cv2.FONT_ITALIC, 1, 2)[0]
                     textX = int((img.shape[1] - textsize[0]) / 2)
                     text_color = (0, 255, 0)
@@ -185,6 +200,7 @@ class Sink(Network.node):
         cv2.imshow('Ergocub-Visual-Perception', img)
         cv2.setWindowProperty('Ergocub-Visual-Perception', cv2.WND_PROP_TOPMOST, 1)
         cv2.waitKey(1)
+        self.prev_action = self.action
         return {}
 
 
