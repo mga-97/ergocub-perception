@@ -58,6 +58,8 @@ tmux split-window -h -t $TMUX_NAME
 tmux select-pane -T "Human Pose Estimation"
 tmux send-keys -t $TMUX_NAME "docker exec -it $DOCKER_CONTAINER_NAME bash" Enter
 tmux send-keys -t $TMUX_NAME "cd perception" Enter
+tmux send-keys -t $TMUX_NAME "export HUMAN_X_FILTER_ALPHA=0.3" Enter
+tmux send-keys -t $TMUX_NAME "export HUMAN_Y_FILTER_ALPHA=0.1" Enter
 tmux send-keys -t $TMUX_NAME "python scripts/human_pose_estimation.py" Enter
 
 tmux split-window -h -t $TMUX_NAME
@@ -145,7 +147,7 @@ tmux split-window -h -t $TMUX_NAME
 tmux select-pane -T "RealSense GUI"
 tmux send-keys -t $TMUX_NAME "docker exec -it $DOCKER_CONTAINER_NAME bash" Enter
 tmux send-keys -t $TMUX_NAME "cd perception" Enter
-tmux send-keys -t $TMUX_NAME "python scripts/realsense_gui.py"
+tmux send-keys -t $TMUX_NAME "python scripts/realsense_gui.py" Enter
 
 # COMMUNICATION #######################################################################
 tmux select-layout -t $TMUX_NAME tiled
@@ -197,9 +199,15 @@ then
   tmux split-window -h -t $TMUX_NAME
   tmux send-keys -t $TMUX_NAME "docker exec -it $DOCKER_CONTAINER_NAME bash" Enter
   tmux send-keys -t $TMUX_NAME "yarp repeat /depthCamera/depthImage:r" Enter
-  tmux send-keys -t $TMUX_NAME "./connect_camera.sh" Enter
 fi
 
+if [ -n "$REPEATER" ] # Variable is non-null
+then
+  tmux split-window -h -t $TMUX_NAME
+  tmux send-keys -t $TMUX_NAME "docker exec -it $DOCKER_CONTAINER_NAME bash" Enter
+  tmux send-keys -t $TMUX_NAME "cd perception"  Enter
+  tmux send-keys -t $TMUX_NAME "sleep 3 && ./connect_camera.sh" Enter
+fi
 tmux split-window -h -t $TMUX_NAME
 
 # RPC server

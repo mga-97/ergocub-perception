@@ -63,7 +63,7 @@ class AR(BaseConfig):
     class Args:
         input_type = input_type  # skeleton or rgb
         device = 'cuda'
-        support_set_path = os.path.join("action_rec", "ar", "saved", "ergocub_icra_demo.pkl")
+        support_set_path = os.path.join("action_rec", "ar", "saved", "steb_overfitted.pkl")
 
         if input_type == "rgb":
             final_ckpt_path = os.path.join(base_dir, "../action_rec/ar", "weights", "raws", "rgb", "5-w-5-s.pth")
@@ -81,7 +81,7 @@ class AR(BaseConfig):
     class Main:
         input_type = 'skeleton'
         acquisition_time = 3
-        consistency_window_length = 16
-        consistency_minimum_detection = 12
+        consistency_window_length = 4
+        consistency_minimum_detection = 3
         os_score_thr = 0.5
         fs_score_thr = 0.5
