@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
 from random import choice
+import subprocess
+import time
 
 import cv2
 import numpy as np
@@ -54,6 +56,13 @@ class Sink(Network.node):
         response_port_name = '/perception/response:o'
         self.response_port.open(response_port_name)
         print('{:s} opened'.format(action_port_name))
+        self.cooldown = time.time()
+
+        self.response_cmds = {
+            "wave": "bash /home/ergocub/perception/scripts/wave.bash",
+            "shake": "bash /home/ergocub/perception/scripts/shake.bash",
+            "t-pose": "bash /home/ergocub/perception/scripts/t-pose.bash"
+        }
 
     def startup(self):
         pass
@@ -182,10 +191,11 @@ class Sink(Network.node):
         if self.action not in Signals:
             if self.obj_distance is Signals.NOT_OBSERVED or self.obj_distance/1000 > 1.5:  # No box in 1 meter
                 if self.action != 'none':
-                    if self.action == 'wave' and self.action != self.prev_action:
-                        resposne_string = self.choose_greeting()
-                        response_btl.addString(resposne_string)
-                        self.response_port.write()
+                    if self.action in self.response_cmds and self.action != self.prev_action:
+                        if time.time() - self.cooldown > 5:
+                            cmd = self.response_cmds[self.action]
+                            subprocess.run(cmd, shell=True)	
+                            self.cooldown = time.time()
                     textsize = cv2.getTextSize(self.action, cv2.FONT_ITALIC, 1, 2)[0]
                     textX = int((img.shape[1] - textsize[0]) / 2)
                     text_color = (0, 255, 0)

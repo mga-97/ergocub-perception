@@ -20,8 +20,8 @@ class HumanPoseEstimation(Network.node):
         self.direct_human_data_port = yarp.BufferedPortBottle()
         self.previous_extreme = [None, None]
         self.previous_centre = [None, None]
-        self.alpha_x = float(os.environ['HUMAN_X_FILTER_ALPHA'])
-        self.alpha_y = float(os.environ['HUMAN_Y_FILTER_ALPHA'])
+        self.alpha_x = 0.5 #float(os.environ['HUMAN_X_FILTER_ALPHA'])
+        self.alpha_y = 0.5 #float(os.environ['HUMAN_Y_FILTER_ALPHA'])
 
 
     def startup(self):
