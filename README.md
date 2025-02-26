@@ -36,3 +36,7 @@ To test the installation, launch:
 
 ### Run with webcam
 In order to test the pipeline with the webcam, follow [.](https://askubuntu.com/questions/1405903/capturing-webcam-video-with-opencv-in-wsl2).
+
+
+### Respond to actions
+This branch contains a temporary solution to trigger robot responses to actions, this is implemented in ```sink2.py``` where you can modify the attribute ```response_cmds``` to add a response to an action.
